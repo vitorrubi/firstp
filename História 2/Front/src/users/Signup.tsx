@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Fragment } from "react";
 
@@ -5,6 +6,7 @@ type Inputs = {
   user_name: string;
   user_email: string;
   user_password: string;
+  confirm_password: string;
 };
 type User = any;
 
@@ -18,6 +20,9 @@ const Signup = ({ setUser }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -37,41 +42,66 @@ const Signup = ({ setUser }: Props) => {
     }
   };
 
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPassword(event.target.value);
+  };
+
+  const passwordMatch = password === confirmPassword;
+
   return (
     <Fragment>
-      <h1>Crie sua Conta!</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="form-login">
-        <div className="row">
-          <input
-            type="text"
-            {...register("user_name")}
-            placeholder="Nome do Usuário"
-            required
-          />
+      <div className="top">
+        <img src="/logo.png" className="logo" alt="Logo" />
+        <div className="databox">
+          <h1>Crie sua Conta!</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="form-login">
+            <div className="row">
+              <input
+                className="input"
+                type="email"
+                {...register("user_name")}
+                placeholder="Email"
+                required
+              />
+            </div>
+            <div className="row">
+              <input
+                className="input"
+                type="password"
+                {...register("user_email")}
+                placeholder="Senha"
+                value={password}
+                onChange={handlePasswordChange}
+                required
+              />
+            </div>
+            <div className="row">
+              <input
+                className="input"
+                type="password"
+                {...register("user_password")}
+                placeholder="Confirme sua senha"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                required
+              />
+              {!passwordMatch && <span>As senhas não coincidem</span>}
+            </div>
+            <div className="row-button">
+              <button type="submit">Cadastrar</button>
+            </div>
+            <div className="signup-link">
+              <a href="#">Já tem uma conta? Clique aqui</a>
+            </div>
+          </form>
         </div>
-        <div className="row">
-          <input
-            type="email"
-            {...register("user_email")}
-            placeholder="Email do Usuário"
-            required
-          />
-        </div>
-        <div className="row">
-          <input
-            type="password"
-            {...register("user_password")}
-            placeholder="Senha do usuário"
-            required
-          />
-        </div>
-        <div className="row-button">
-          <button type="submit">Enviar</button>
-        </div>
-        <div className="signup-link">
-          <a href="#">Já possui uma conta?</a>
-        </div>
-      </form>
+      </div>
     </Fragment>
   );
 };
