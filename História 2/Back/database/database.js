@@ -1,5 +1,5 @@
-import pg from "pg";
-import dotenv from "dotenv";
+const pg = require("pg");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -9,4 +9,4 @@ const config = `postgresql://${process.env.PG_USERNAME}:${process.env.PG_PASSWOR
 
 const pool = new Pool({ connectionString: config });
 
-export default pool;
+module.exports = pool;

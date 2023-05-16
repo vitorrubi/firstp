@@ -1,8 +1,8 @@
 const router = require("express").Router();
 
-import pool from "../database/database.";
+const pool = require("../database/database");
 
-router.post("/users", async (req: any, res: any) => {
+router.post("/users", async (req, res) => {
   const { user_name, user_email, user_password } = req.body;
   console.log(user_name, user_email, user_password);
   const newUser = await pool.query(

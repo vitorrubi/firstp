@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Fragment } from "react";
 import logo from "/logo.png";
 import WebFont from "webfontloader";
@@ -10,29 +10,17 @@ WebFont.load({
   },
 });
 
-type Inputs = {
-  user_name: string;
-  user_email: string;
-  user_password: string;
-  confirm_password: string;
-};
-type User = any;
-
-interface Props {
-  setUser?: (user: User) => void;
-}
-
-const Signup = ({ setUser }: Props) => {
+const Signup = ({ setUser }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit = async (data) => {
     try {
       const response = await fetch("/api/kanboom/users", {
         headers: {
@@ -50,13 +38,11 @@ const Signup = ({ setUser }: Props) => {
     }
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleConfirmPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
 
